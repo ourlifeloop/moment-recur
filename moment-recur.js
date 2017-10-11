@@ -12,7 +12,7 @@
     hasModule = (typeof module !== "undefined" && module !== null) && (module.exports != null);
 
     if (typeof moment === 'undefined') {
-        throw Error("Can't find moment");
+      throw Error("Can't find moment");
     }
 
     // Interval object for creating and matching interval-based rules
@@ -63,8 +63,8 @@
         }
 
         return {
-            create: createInterval,
-            match: matchInterval
+          create: createInterval,
+          match: matchInterval
         };
     })();
 
@@ -136,8 +136,8 @@
 
             // Make sure the listed units are in the measure's range
             checkRange( ranges[measure].low,
-                ranges[measure].high,
-                keys );
+                        ranges[measure].high,
+                        keys );
 
             return {
                 measure: measure,
@@ -366,7 +366,6 @@
                     return true;
                 }
             }
-
             return false;
         }
 
@@ -511,7 +510,7 @@
 
         // Get/Set a temporary from date
         Recur.prototype.fromDate = function(date) {
-            if (date === null) {
+             if (date === null) {
                 this.from = null;
                 return this;
             }
