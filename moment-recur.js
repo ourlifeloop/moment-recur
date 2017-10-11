@@ -12,7 +12,7 @@
     hasModule = (typeof module !== "undefined" && module !== null) && (module.exports != null);
 
     if (typeof moment === 'undefined') {
-      throw Error("Can't find moment");
+        throw Error("Can't find moment");
     }
 
     // Interval object for creating and matching interval-based rules
@@ -33,14 +33,14 @@
             };
         }
 
-        function matchInterval(type, units, start, date) {
+        function matchInterval(type, units, start, date, intervalOnly) {
             // Get the difference between the start date and the provided date,
             // using the required measure based on the type of rule'
             var diff = null;
             if( date.isBefore(start) ) {
-                diff = start.diff(date, type, true);
+                diff = start.diff(date, type, intervalOnly);
             } else {
-                diff = date.diff(start, type, true);
+                diff = date.diff(start, type, intervalOnly);
             }
             if( type == 'days') {
                 // if we are dealing with days, we deal with whole days only.
@@ -63,8 +63,8 @@
         }
 
         return {
-          create: createInterval,
-          match: matchInterval
+            create: createInterval,
+            match: matchInterval
         };
     })();
 
@@ -76,8 +76,8 @@
             "daysOfWeek": "day",
             "weeksOfMonth": "monthWeek",
             "weeksOfMonthByDay": "monthWeekByDay",
-            "weeksOfYear": "weeks",
-            "monthsOfYear": "months"
+            "weeksOfYear": "week",
+            "monthsOfYear": "month"
         };
 
         // Dictionary of ranges based on measures
@@ -136,8 +136,8 @@
 
             // Make sure the listed units are in the measure's range
             checkRange( ranges[measure].low,
-                        ranges[measure].high,
-                        keys );
+                ranges[measure].high,
+                keys );
 
             return {
                 measure: measure,
@@ -366,6 +366,7 @@
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -416,7 +417,7 @@
                 type = ruleTypes[rule.measure];
 
                 if (type === "interval") {
-                    if ( !Interval.match(rule.measure, rule.units, start, date) ) {
+                    if ( !Interval.match(rule.measure, rule.units, start, date, rules.length === 1) ) {
                         return false;
                     }
                 }
@@ -510,7 +511,7 @@
 
         // Get/Set a temporary from date
         Recur.prototype.fromDate = function(date) {
-             if (date === null) {
+            if (date === null) {
                 this.from = null;
                 return this;
             }
@@ -740,7 +741,7 @@
     // Plugin for removing all time information from a given date
     moment.fn.dateOnly = function() {
         if (this.tz && typeof(moment.tz) == 'function' ) {
-            return moment.tz(this.format('YYYY/MM/DD'), 'UTC');
+            return moment.tz(this.format('YYYY-MM-DD'), 'UTC');
         } else {
             return this.hours(0).minutes(0).seconds(0).milliseconds(0).add(this.utcOffset(), "minute").utcOffset(0);
         }
